@@ -9,21 +9,22 @@ export default function HomeScreen({ navigation }) {
     useEffect(() => {
         axios
             .get("https://jsonplaceholder.typicode.com/users")
-            .then(res => SetUsers(res.data))
+            .then(res => { console.error(res); SetUsers(res.data) })
+            .catch(error => console.error(error))
     }, [])
     return (
         <View style={StyleSheet.container}>
-            {/* <FlatList keyExtractor={(user) => user.id} data={users} renderItem={({ user }) => (
-                <Text style={styles.user}>{user.name}</Text>
+            <FlatList keyExtractor={(user) => user.id} data={users} renderItem={({ item }) => (
+                <Text style={styles.user}>{item.name}</Text>
             )}>
-            </FlatList> */}
-            <ScrollView>
+            </FlatList>
+            {/* <ScrollView>
                 {
                     users.map(user => <View key={user.id}>
                         <Text style={styles.user}>{user.name}</Text></View>)
                 }
-            </ScrollView>
-        </View >
+            </ScrollView> */}
+        </View>
     );
 }
 
