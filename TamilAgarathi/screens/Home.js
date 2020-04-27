@@ -1,16 +1,43 @@
-import * as React from 'react';
-import { Button, View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Button, View, Text, ScrollView, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 
 export default function HomeScreen({ navigation }) {
+    const [users, SetUsers] = useState([]);
+
+    useEffect(() => {
+        axios
+            .get("https://jsonplaceholder.typicode.com/users")
+            .then(res => SetUsers(res.data))
+    }, [])
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>
-                Home Screen
-            </Text>
-            {/* <Button
-                onPress={() => navigation.navigate('Saved')}
-                title="Go to notifications"
-            /> */}
-        </View>
+        <View style={StyleSheet.container}>
+            {/* <FlatList keyExtractor={(user) => user.id} data={users} renderItem={({ user }) => (
+                <Text style={styles.user}>{user.name}</Text>
+            )}>
+            </FlatList> */}
+            <ScrollView>
+                {
+                    users.map(user => <View key={user.id}>
+                        <Text style={styles.user}>{user.name}</Text></View>)
+                }
+            </ScrollView>
+        </View >
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        paddingTop: 40,
+        paddingHorizontal: 20
+    },
+    user: {
+        marginTop: 24,
+        padding: 30,
+        backgroundColor: 'pink',
+        fontSize: 24
+    }
+})
